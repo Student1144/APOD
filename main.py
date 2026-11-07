@@ -5,17 +5,17 @@ import dotenv
 
 dotenv.load_dotenv(".env")
 apikey = os.getenv("api_key")
-url = f"https://api.nasa.gov/planetary/apod?api_key={apikey}"
+url = f"https://science.nasa.gov/wp-json/wp/v2/apod-basic/?api_key={apikey}"
 
 re = r.get(url)
 content = re.json()
 
-title = content["title"]
+title = content[0]["title"]
 
 st.title("Astronomy Picture Of the Day!")
 st.header(title)
 
-imgurl = content["url"]
+imgurl = content[0]["hdurl"]
 response = r.get(imgurl)
 
 with open("image.jpg", "wb") as file:
@@ -23,4 +23,4 @@ with open("image.jpg", "wb") as file:
 
 st.image("image.jpg")
 
-st.write(content["explanation"])
+st.html(content[0]["explanation"])
